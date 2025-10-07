@@ -1,5 +1,5 @@
 import User from '../users/user.model.js'
-import { hash } from 'argon2'
+import { hash, verify } from 'argon2'
 import { generarJWT } from "../../helpers/JWT-generate.js"
 
 export const register = async ( req, res) => {
@@ -7,7 +7,7 @@ export const register = async ( req, res) => {
         const data = req.body
 
         let profilePicture = req.fileRelativePath || 'profiles/default-avatar.png'
-        const encryptedpPassword = await hash(data.password)
+        const encryptedPassword = await hash(data.password)
 
         const newUser = await User.create({
             name: data.name,
@@ -21,7 +21,7 @@ export const register = async ( req, res) => {
             message: "Usuario registrado correctamente",
             userDetails: {
                 user: newUser.username,
-                email: nuewUser.email,
+                email: newUser.email,
             },
         })
     }catch(error){
