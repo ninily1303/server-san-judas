@@ -1,14 +1,13 @@
 import Post from './post.model.js'
-import User from '../users/user.mode.js'
+import User from '../users/user.model.js'
 import Comment from '../comments/comment.model.js'
-import { Result } from 'express-validator'
 
 export const createPost = async (req, res) => {
     try{
         const { title, content} = req.body
         const authorId = req.uid 
 
-        const post = new Post.create({
+        const post = await Post.create({
              title,
             content,
             author: authorId
@@ -27,7 +26,7 @@ export const createPost = async (req, res) => {
             post: populatedPost
         })
     }catch (error){
-        return res.status(500).jsom({
+        return res.status(500).json({
             message: 'Error al guardar la publicacion',
             error: error.message
         })
